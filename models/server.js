@@ -1,20 +1,24 @@
 const express = require('express'); 
 const cors = require('cors');
+const { dbConnection } = require('../database/config');
 class Server {
     // Ususalmente las propiedades se declaran las propiedades
     constructor() {
-        // instancia de express
-        this.app = express();
-        // puerto con con su variable de entorno
-        this.port = process.env.PORT
-        // Rutas Disponibles
-        this.usersPath = '/api/users';
+        this.app = express();           // instancia de express
+        this.port = process.env.PORT;   // puerto con con su variable de entorno
+        this.usersPath = '/api/usuarios';  // Rutas Disponibles
+        // Conección a basde de datos
+        this.conectarDB();
         // Midlewers 
         this.middlewares();
         // Rutas de mi aplicacion --> en el constructor llamaremos las rutas para disparar el método
         this.routes();
     }
-     // los middlewares usan la plabra clase "use"
+
+    async conectarDB() {
+        await dbConnection()
+    }
+     // los middlewares usan la palabra clave "use"
     middlewares() {
         this.app.use(cors());    // --> cors
         this.app.use(express.json());   // -->  lectura y parseo del body
@@ -24,7 +28,7 @@ class Server {
     // crearemos las rutas a traves de un metodo
     routes() {
         // configuracion routes con path --> '/api/usuarios'
-       this.app.use(this.usersPath, require('../routes/users'))
+       this.app.use(this.usersPath, require('../routes/usuarios'))
     }
     // Escucha del puerto
     listen() {

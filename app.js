@@ -1,8 +1,8 @@
-require('dotenv').config();
+require('dotenv').config();     // establece las variables de entorno
 const Server = require('./models/server');
-// crear una instancia del servidor
+// Instancia del servidor
 const  server = new Server();
 
-
+// ejecución del metodo listen
 server.listen();
 
